@@ -1,0 +1,18 @@
+{
+  "verticalFilterSection": {
+    "sectionHeading": { "label": "Filter" },
+    "filterOptions": [
+      { "label": "Food Category", "id": "food-category", "isEnabled": true },
+      { "label": "Price Range", "id": "price-range", "isEnabled": false }
+    ]
+  },
+  "horizontalFilterSection": {
+    "sectionHeading": { "label": "Filter" },
+    "filterOptions": [
+      { "label": "Food Category", "id": "food-category", "isEnabled": true }
+    ]
+  },
+  "restaurantListSection": {
+    "sectionHeading": { "label": "Restaurants" }
+  }
+}
