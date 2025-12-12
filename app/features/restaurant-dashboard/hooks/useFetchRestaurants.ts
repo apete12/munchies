@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { apiServices } from '@/app/lib/api';
@@ -24,10 +24,11 @@ export function useFetchRestaurnts() {
       setError(null);
 
       try {
-        const allRestaurantsResponse = await apiServices.getAllRestaurants();
-
-        if (allRestaurantsResponse.data.restaurants.length > 0) {
-          setRestaurantData(allRestaurantsResponse.data.restaurants);
+        const allRestaurantsResponse = await apiServices.getRestaurants(
+          categoryId || ''
+        );
+        if (allRestaurantsResponse.data.length > 0) {
+          setRestaurantData(allRestaurantsResponse.data);
         } else {
           setError(
             allRestaurantsResponse.error?.message ||
@@ -42,7 +43,7 @@ export function useFetchRestaurnts() {
     }
 
     fetchRestaurants();
-  }, []);
+  }, [categoryId]);
 
   useEffect(() => {
     async function fetchCategoryFilters() {
@@ -70,17 +71,8 @@ export function useFetchRestaurnts() {
     fetchCategoryFilters();
   }, []);
 
-  const filteredRestaurants = useMemo(() => {
-    if (!restaurantData) return null;
-    if (!categoryId) return restaurantData;
-
-    return restaurantData.filter((restaurant) =>
-      restaurant.filter_ids?.includes(categoryId)
-    );
-  }, [restaurantData, categoryId]);
-
   return {
-    restaurantData: filteredRestaurants,
+    restaurantData,
     isRestaurantDataLoading,
     isCategoryFiltersLoading,
     categoryFilters,
