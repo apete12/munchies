@@ -1,4 +1,5 @@
 import { FilterButtonProps } from './types';
+import Image from 'next/image';
 
 const FilterButton = ({
   onFilterClick,
@@ -9,6 +10,7 @@ const FilterButton = ({
   inactiveStateClasses,
   filterName,
   filterType,
+  imageSrc,
 }: FilterButtonProps) => {
   return (
     <button
@@ -20,6 +22,14 @@ const FilterButton = ({
       }`}
     >
       {filterName}
+      {imageSrc && (
+        <Image
+          src={imageSrc}
+          width={30}
+          height={30}
+          alt={''} // decorative image
+        />
+      )}
     </button>
   );
 };
