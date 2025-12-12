@@ -3,10 +3,15 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useFetchRestaurnts } from '@/app/features/restaurant-dashboard/hooks/useFetchRestaurants';
 import Loading from '@/app/loading';
 import Error from '@/app/error';
+
+
 import RestaurantCard from './components/restaurant-card/restaurant-card';
 import FilterButton from '@/app/components/filter-button/filter-button';
 import placeholder from '@/app/assets/placeholder.png';
 import filterDashboardContent from '@/app/content/restaurant-dashboard.json';
+
+
+
 export default function RestaurantDashboard() {
   const router = useRouter();
   const pathname = usePathname();
@@ -18,6 +23,7 @@ export default function RestaurantDashboard() {
     categoryFilters,
     error,
     categoryId,
+    selectedCategory,
   } = useFetchRestaurnts();
 
   if (error) {
@@ -48,6 +54,18 @@ export default function RestaurantDashboard() {
 
   const restaurantListSectionHeading =
     filterDashboardContent.restaurantListSection.sectionHeading.label;
+
+  // aria-live region to announce restaurant count and category filters
+  const restaurantLength = restaurantData?.length || 0;
+  const plural = restaurantLength === 1 ? '' : 's';
+  const categoryText = selectedCategory?.name
+    ? ` in ${selectedCategory.name} category`
+    : '';
+
+  const announcementText =
+    restaurantLength > 0
+      ? `${restaurantLength} restaurant ${plural} found${categoryText}`
+      : `No restaurants found ${categoryText}`;
 
   return (
     <div className="flex min-h-screen min-w-screen items-center justify-center font-sans ">
@@ -113,6 +131,12 @@ export default function RestaurantDashboard() {
             <h2 className="text-2xl mt-10 mb-5">
               {restaurantListSectionHeading}
             </h2>
+            {/* Note, for aria live section to work, it always needs to be present in the DOM */}
+            <div className="sr-only">
+              <p aria-live="polite" aria-atomic="true">
+                {announcementText}
+              </p>
+            </div>
             {isRestaurantDataLoading ? (
               <Loading />
             ) : (
@@ -120,9 +144,10 @@ export default function RestaurantDashboard() {
                 {restaurantData &&
                   restaurantData.map((restaurant) => (
                     <li key={restaurant.id}>
+                      {/* using placeholder images w/ decorative alt text */}
                       <RestaurantCard
                         name={restaurant.name}
-                        imageSrc={''}
+                        imageSrc={''} 
                         altText={''}
                         isRestaurantOpen={restaurant.is_currently_open}
                         placeholderImage={placeholder}

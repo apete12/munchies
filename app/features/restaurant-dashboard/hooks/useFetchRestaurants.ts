@@ -14,6 +14,7 @@ export function useFetchRestaurnts() {
     null
   );
   const [categoryFilters, setCategoryFilters] = useState<Filter[] | null>(null);
+
   const searchParams = useSearchParams();
   const categoryId = searchParams.get('category');
 
@@ -70,6 +71,12 @@ export function useFetchRestaurnts() {
     fetchCategoryFilters();
   }, []);
 
+  const selectedCategory = categoryFilters?.find(
+    (filter) => filter.id === categoryId
+  );
+
+  console.log(selectedCategory, 'selectedCategory');
+
   return {
     restaurantData,
     isRestaurantDataLoading,
@@ -78,5 +85,6 @@ export function useFetchRestaurnts() {
     error,
     setRestaurantData,
     categoryId,
+    selectedCategory,
   };
 }
