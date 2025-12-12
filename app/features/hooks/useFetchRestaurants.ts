@@ -1,13 +1,13 @@
 'use client';
 import { useEffect } from 'react';
-
+import { apiServices } from '@/app/lib/api';
 export function useFetchRestaurnts() {
   useEffect(() => {
     async function fetchRestaurants() {
       try {
-        const response = await fetch('/api/restaurants');
+        const response = await apiServices.getAllRestaurants();
         const data = await response.json();
-        console.log(data, 'data in home');
+        console.log(data, 'restaurants in home');
       } catch (err) {
         console.log(err, 'error');
       }
@@ -19,9 +19,9 @@ export function useFetchRestaurnts() {
   useEffect(() => {
     async function fetchFilters() {
       try {
-        const response = await fetch('/api/filters');
+        const response = await apiServices.getAllFilters();
         const data = await response.json();
-        console.log(data, 'data in home');
+        console.log(data, 'filters in home');
       } catch (err) {
         console.log(err, 'error');
       }
