@@ -19,6 +19,8 @@ export default function RestaurantDashboard() {
     categoryId,
   } = useFetchRestaurnts();
 
+  console.log(restaurantData, 'restaurant');
+
   if (isRestaurantDataLoading) {
     return <Loading />;
   }
@@ -74,6 +76,7 @@ export default function RestaurantDashboard() {
                     name={restaurant.name}
                     imageSrc={''}
                     altText={''}
+                    isRestaurantOpen={restaurant.is_currently_open}
                   />
                 </li>
               ))}
