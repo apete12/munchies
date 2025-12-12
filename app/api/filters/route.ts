@@ -1,4 +1,5 @@
 import { env } from '@/app/config/env';
+import { FilterResponse } from '@/app/lib/types';
 
 export const revalidate = 300;
 export async function GET() {
@@ -25,7 +26,8 @@ export async function GET() {
         { status: response.status }
       );
     }
-    const data = await response.json();
+    const data: FilterResponse = await response.json();
+
     const endTime = Date.now();
 
     // if response okay, return data w/ metadata

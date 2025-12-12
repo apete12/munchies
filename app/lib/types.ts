@@ -20,3 +20,13 @@ export interface EnrichedRestaurant extends Restaurant {
 export interface RestaurantsResponse {
   restaurants: Restaurant[];
 }
+
+export type Filter = {
+  id: string;
+  name: string;
+  image_url: string;
+};
+
+export interface FilterResponse {
+  filters: Filter[];
+}
