@@ -2,17 +2,31 @@
 import { useEffect } from 'react';
 
 export function useFetchRestaurnts() {
-   useEffect(() => {
+  useEffect(() => {
     async function fetchRestaurants() {
       try {
         const response = await fetch('/api/restaurants');
         const data = await response.json();
-         console.log(data, 'data in home');
+        console.log(data, 'data in home');
       } catch (err) {
         console.log(err, 'error');
       }
     }
 
     fetchRestaurants();
+  }, []);
+
+  useEffect(() => {
+    async function fetchFilters() {
+      try {
+        const response = await fetch('/api/filters');
+        const data = await response.json();
+        console.log(data, 'data in home');
+      } catch (err) {
+        console.log(err, 'error');
+      }
+    }
+
+    fetchFilters();
   }, []);
 }
