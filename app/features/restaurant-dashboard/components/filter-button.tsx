@@ -19,6 +19,7 @@ const FilterButton = ({
   filterName,
   filterType,
 }: FilterButtonProps) => {
+ 
   return (
     <button
       onClick={() => onFilterClick(filterIdentifier, filterType)}

@@ -3,7 +3,8 @@ import { useEffect, useState, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { apiServices } from '@/app/lib/api';
-import { Restaurant } from '@/app/features/restaurant-dashboard/types';
+import { Restaurant, Filter } from '@/app/features/restaurant-dashboard/types';
+
 export function useFetchRestaurnts() {
   const [isRestaurantDataLoading, setRestaurantDataLoading] =
     useState<boolean>(true);
@@ -13,9 +14,7 @@ export function useFetchRestaurnts() {
   const [restaurantData, setRestaurantData] = useState<Restaurant[] | null>(
     null
   );
-  const [categoryFilters, setCategoryFilters] = useState<Restaurant[] | null>(
-    null
-  );
+  const [categoryFilters, setCategoryFilters] = useState<Filter[] | null>(null);
   const searchParams = useSearchParams();
   const categoryId = searchParams.get('category');
 
@@ -87,5 +86,6 @@ export function useFetchRestaurnts() {
     categoryFilters,
     error,
     setRestaurantData,
+    categoryId,
   };
 }
