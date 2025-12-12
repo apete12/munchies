@@ -40,7 +40,7 @@ export default function RestaurantDashboard() {
 
   return (
     <div className="flex min-h-screen w-full  items-center justify-centerfont-sans ">
-      <main className="flex min-h-screen w-full gap-y-5 items-center justify-between sm:items-start px-12 py-24">
+      <main className="flex min-h-screen w-full gap-y-5 items-start justify-between sm:items-start px-12 py-24">
         <section className="flex flex-col">
           <h2 className="text-2xl mb-5">Filter</h2>
           <h3 className="text-md mb-2">FOOD CATEGORY</h3>
