@@ -1,4 +1,4 @@
-# Restaurant Discovery App
+# Munchies
 
 A Next.js application for browsing and filtering restaurants.
 
