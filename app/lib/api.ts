@@ -1,6 +1,9 @@
 export const apiServices = {
-  getAllRestaurants: async () => {
-    const response = await fetch(`/api/restaurants`);
+  getRestaurants: async (categoryId?: string) => {
+    const url = categoryId
+      ? `/api/restaurants?category=${categoryId}`
+      : `/api/restaurants`;
+    const response = await fetch(url);
     return response.json();
   },
 
