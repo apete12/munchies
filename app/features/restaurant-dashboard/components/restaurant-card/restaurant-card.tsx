@@ -1,11 +1,6 @@
 import Image from 'next/image';
 import placeholder from '@/app/assets/placeholder.png';
-
-type RestaurantCardProps = {
-  name: string;
-  imageSrc: string;
-  altText: string;
-};
+import { RestaurantCardProps } from './types';
 
 const RestaurantCard = ({ name, imageSrc, altText }: RestaurantCardProps) => {
   return (

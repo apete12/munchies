@@ -2,9 +2,9 @@
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useFetchRestaurnts } from '@/app/features/restaurant-dashboard/hooks/useFetchRestaurants';
 import Loading from '@/app/loading';
-import RestaurantCard from './restaurant-card';
-import FilterButton from './filter-button';
 import Error from '@/app/error';
+import RestaurantCard from '../components/restaurant-card/restaurant-card';
+import FilterButton from '@/app/components/filter-button/filter-button';
 
 export default function RestaurantDashboard() {
   const router = useRouter();
