@@ -1,25 +1,33 @@
 'use client';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useFetchRestaurnts } from '@/app/features/restaurant-dashboard/hooks/useFetchRestaurants';
 import Loading from '@/app/loading';
 import RestaurantCard from './restaurant-card';
 import FilterButton from './filter-button';
 
 export default function RestaurantDashboard() {
-  const {
-    restaurantData,
-    isRestaurantDataLoading,
-    isCategoryFiltersLoading,
-    categoryFilters,
-  } = useFetchRestaurnts();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const { restaurantData, isRestaurantDataLoading, categoryFilters } =
+    useFetchRestaurnts();
 
   if (isRestaurantDataLoading) {
     return <Loading />;
   }
 
-  console.log(categoryFilters, 'categoryFilters');
+  const handleFilterClick = (filterId: string, filterType: string) => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
 
-  const handleOnFilterClick = (filterIdentifier: string) => {
-    console.log(filterIdentifier, 'filterIdentifier');
+    if (current.get(filterType) === filterId) {
+      current.delete(filterType);
+    } else {
+      current.set(filterType, filterId);
+    }
+
+    const query = current.toString() ? `?${current.toString()}` : '';
+    router.push(`${pathname}${query}`);
   };
 
   return (
@@ -34,8 +42,12 @@ export default function RestaurantDashboard() {
                     key={categoryFilter.id}
                     filterName={categoryFilter.name}
                     baseClasses="bg-black text-white"
-                    onFilterClick={handleOnFilterClick}
+                    onFilterClick={handleFilterClick}
                     filterIdentifier={categoryFilter.id}
+                    filterType={'category'}
+                    activeFilterId={searchParams.get('category') || ''}
+                    activeStateClasses="bg-blue-500"
+                    inactiveStateClasses="bg-gray-500"
                   />
                 </li>
               );

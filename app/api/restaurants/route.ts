@@ -1,5 +1,4 @@
 import { env } from '@/app/config/env';
-
 export const revalidate = 300;
 export async function GET() {
   const startTime = Date.now();
@@ -28,6 +27,7 @@ export async function GET() {
     }
 
     const data = await response.json();
+
     const endTime = Date.now();
 
     // if response okay, return data w/ metadata

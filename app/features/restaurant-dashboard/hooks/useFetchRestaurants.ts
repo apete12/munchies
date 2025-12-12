@@ -1,5 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
+
 import { apiServices } from '@/app/lib/api';
 import { Restaurant } from '@/app/features/restaurant-dashboard/types';
 export function useFetchRestaurnts() {
@@ -14,6 +16,8 @@ export function useFetchRestaurnts() {
   const [categoryFilters, setCategoryFilters] = useState<Restaurant[] | null>(
     null
   );
+  const searchParams = useSearchParams();
+  const categoryId = searchParams.get('category');
 
   useEffect(() => {
     async function fetchRestaurants() {
@@ -67,11 +71,21 @@ export function useFetchRestaurnts() {
     fetchCategoryFilters();
   }, []);
 
+  const filteredRestaurants = useMemo(() => {
+    if (!restaurantData) return null;
+    if (!categoryId) return restaurantData;
+
+    return restaurantData.filter((restaurant) =>
+      restaurant.filter_ids?.includes(categoryId)
+    );
+  }, [restaurantData, categoryId]);
+
   return {
-    restaurantData,
+    restaurantData: filteredRestaurants,
     isRestaurantDataLoading,
     isCategoryFiltersLoading,
     categoryFilters,
     error,
+    setRestaurantData,
   };
 }

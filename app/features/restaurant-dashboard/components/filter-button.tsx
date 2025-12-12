@@ -1,11 +1,12 @@
 type FilterButtonProps = {
-  onFilterClick: (filterIdentifier: string) => void;
+  onFilterClick: (filterIdentifier: string, filterType: string) => void;
   filterIdentifier: string;
   baseClasses: string;
   activeFilterId: string;
   activeStateClasses: string;
   inactiveStateClasses: string;
   filterName: string;
+  filterType: string;
 };
 
 const FilterButton = ({
@@ -16,10 +17,11 @@ const FilterButton = ({
   activeStateClasses,
   inactiveStateClasses,
   filterName,
+  filterType,
 }: FilterButtonProps) => {
   return (
     <button
-      onClick={() => onFilterClick(filterIdentifier)}
+      onClick={() => onFilterClick(filterIdentifier, filterType)}
       className={`${baseClasses} ${
         activeFilterId === filterIdentifier
           ? activeStateClasses
