@@ -5,6 +5,7 @@ import Loading from '@/app/loading';
 import Error from '@/app/error';
 import RestaurantCard from '../components/restaurant-card/restaurant-card';
 import FilterButton from '@/app/components/filter-button/filter-button';
+import placeholder from '@/app/assets/placeholder.png';
 
 export default function RestaurantDashboard() {
   const router = useRouter();
@@ -18,12 +19,6 @@ export default function RestaurantDashboard() {
     error,
     categoryId,
   } = useFetchRestaurnts();
-
-  console.log(restaurantData, 'restaurant');
-
-  if (isRestaurantDataLoading) {
-    return <Loading />;
-  }
 
   if (error) {
     return <Error />;
@@ -67,20 +62,49 @@ export default function RestaurantDashboard() {
               })}
           </ul>
         </section>
-        <section className="flex flex-col">
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {restaurantData &&
-              restaurantData.map((restaurant) => (
-                <li key={restaurant.id}>
-                  <RestaurantCard
-                    name={restaurant.name}
-                    imageSrc={''}
-                    altText={''}
-                    isRestaurantOpen={restaurant.is_currently_open}
-                  />
-                </li>
-              ))}
+        <section className="flex flex-col max-w-3/4">
+          <ul className="w-full flex gap-x-5 justify-between overflow-x-scroll">
+            {categoryFilters &&
+              categoryFilters.map((categoryFilter) => {
+                return (
+                  <li key={categoryFilter.id}>
+                    <FilterButton
+                      key={categoryFilter.id}
+                      filterName={categoryFilter.name}
+                      baseClasses="hover:bg-gray-200 hover:cursor-pointer text-black text-sm min-w-40 min-h-20 border-2 border-gray-300 rounded-lg flex flex-col items-center justify-around"
+                      onFilterClick={handleFilterClick}
+                      filterIdentifier={categoryFilter.id}
+                      filterType={'category'}
+                      activeFilterId={categoryId || ''}
+                      activeStateClasses="bg-gray-300"
+                      inactiveStateClasses=""
+                      imageSrc={placeholder}
+                    />
+                  </li>
+                );
+              })}
           </ul>
+          <div className="flex flex-col">
+            <h2 className="text-2xl mt-10 mb-5">Restaurants</h2>
+            {isRestaurantDataLoading ? (
+              <Loading />
+            ) : (
+              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {restaurantData &&
+                  restaurantData.map((restaurant) => (
+                    <li key={restaurant.id}>
+                      <RestaurantCard
+                        name={restaurant.name}
+                        imageSrc={''}
+                        altText={''}
+                        isRestaurantOpen={restaurant.is_currently_open}
+                        placeholderImage={placeholder}
+                      />
+                    </li>
+                  ))}
+              </ul>
+            )}
+          </div>
         </section>
       </main>
     </div>
