@@ -148,6 +148,7 @@ export default function RestaurantDashboard() {
                         altText={''}
                         isRestaurantOpen={restaurant.is_open}
                         placeholderImage={placeholder}
+                        priceRange={restaurant.price_range}
                       />
                     </li>
                   ))}

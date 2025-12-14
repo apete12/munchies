@@ -8,10 +8,15 @@ const RestaurantCard = ({
   altText,
   isRestaurantOpen,
   placeholderImage,
+  priceRange,
 }: RestaurantCardProps) => {
   return (
     <div className="min-w-80 min-h-32 m-4 p-4 border-2 border-gray-300 rounded-lg shadow-lg">
-      <RestaurantOpenStatusBadge isRestaurantOpen={isRestaurantOpen} />
+      <div className="flex items-center justify-between mb-4">
+        <RestaurantOpenStatusBadge isRestaurantOpen={isRestaurantOpen} />
+        <p>{priceRange}</p>
+      </div>
+
       <Image
         className="max-w-72"
         src={imageSrc || placeholderImage}

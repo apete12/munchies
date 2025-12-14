@@ -6,4 +6,5 @@ export type RestaurantCardProps = {
   altText: string;
   isRestaurantOpen: boolean;
   placeholderImage: StaticImageData;
+  priceRange: string;
 };

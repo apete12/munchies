@@ -7,6 +7,7 @@ export type Restaurant = {
   delivery_time_minutes: number;
   price_range_id: string;
   is_open: boolean;
+  price_range: string;
 };
 
 export type OpenStatusResponse = {

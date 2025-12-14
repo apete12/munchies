@@ -23,7 +23,7 @@ const RestaurantOpenStatusBadge = ({
       text={badgeText}
       icon={badgeIcon}
       containerClasses={
-        'flex items-center justify-center gap-x-2 max-w-20 rounded-full border-2 border-gray-300'
+        'flex items-center justify-center gap-x-2 px-2 rounded-full border-2 border-gray-300'
       }
     />
   );
