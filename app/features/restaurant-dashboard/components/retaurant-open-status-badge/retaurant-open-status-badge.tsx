@@ -1,5 +1,8 @@
+//// COMPONENTS ////
+import { Badge } from '@/app/components';
+
+//// TYPES ////
 import { RestaurantOpenStatusBadgeProps } from './types';
-import Badge from '@/app/components/badge/badge';
 
 const RestaurantOpenStatusBadge = ({
   isRestaurantOpen,

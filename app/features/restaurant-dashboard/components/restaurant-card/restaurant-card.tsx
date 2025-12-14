@@ -1,8 +1,13 @@
+//// GENERAL ////
 import Image from 'next/image';
-import { RestaurantCardProps } from './types';
-import RestaurantOpenStatusBadge from '../retaurant-open-status-badge/retaurant-open-status-badge';
 
-import Badge from '@/app/components/badge/badge';
+//// COMPONENTS ////
+import { Badge } from '@/app/components';
+import { RestaurantOpenStatusBadge } from '@/app/features';
+
+//// TYPES ////
+import { RestaurantCardProps } from './types';
+
 const RestaurantCard = ({
   name,
   imageSrc,
