@@ -5,6 +5,7 @@ import { Restaurant, OpenStatus, RestaurantsResponse } from '@/app/lib/types';
 
 export const revalidate = 300;
 export async function GET(request: NextRequest) {
+  const startTime = Date.now();
   const categoryId = request.nextUrl.searchParams.get('category');
 
   try {
@@ -24,26 +25,32 @@ export async function GET(request: NextRequest) {
     // fetch all open statuses
     const openStatuses: OpenStatus[] = await Promise.all(
       restaurants.map((restaurant) =>
-        fetch(`${env.API_URL}/open/${restaurant.id}`)
-          .then((res) => res.json())
-          .catch(() => ({ is_currently_open: false }))
+        fetch(`${env.API_URL}/open/${restaurant.id}`).then((res) => res.json())
       )
-    );
-
-    const openStatusMap = new Map(
-      openStatuses.map((status) => [
-        status.restaurant_id,
-        status.is_currently_open,
-      ])
     );
 
     // format restaurant data to include open status boolean
     const restaurantDataWithOpenStatus = restaurants.map((restaurant) => ({
       ...restaurant,
-      is_currently_open: openStatusMap.get(restaurant.id) ?? false,
+      is_open: openStatuses.find(
+        (status) => status.restaurant_id === restaurant.id
+      )?.is_open,
     }));
 
-    return Response.json({ success: true, data: restaurantDataWithOpenStatus });
+    const endTime = Date.now();
+
+    return Response.json({
+      meta: {
+        timestamp: new Date().toISOString(),
+        responseTime: `${endTime - startTime}ms`,
+        endpoint: '/filters',
+        recordCount: restaurantDataWithOpenStatus?.length || 0,
+        cachedAt: new Date().toISOString(),
+      },
+      success: true,
+
+      data: restaurantDataWithOpenStatus,
+    });
   } catch (error) {
     console.log(error, 'error');
     return Response.json({ error: 'Failed' }, { status: 500 });
