@@ -9,9 +9,14 @@ export type Restaurant = {
   is_open: boolean;
 };
 
-export type OpenStatus = {
+export type OpenStatusResponse = {
   restaurant_id: string;
   is_open: boolean;
+};
+
+export type PriceRangeResponse = {
+  id: string;
+  range: boolean;
 };
 
 export interface EnrichedRestaurant extends Restaurant {

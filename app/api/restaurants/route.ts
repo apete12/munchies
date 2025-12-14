@@ -1,7 +1,12 @@
 // app/api/restaurants/route.ts
 import { NextRequest } from 'next/server';
 import { env } from '@/app/config/env';
-import { Restaurant, OpenStatus, RestaurantsResponse } from '@/app/lib/types';
+import {
+  Restaurant,
+  OpenStatusResponse,
+  RestaurantsResponse,
+  PriceRangeResponse,
+} from '@/app/lib/types';
 
 export const revalidate = 300;
 export async function GET(request: NextRequest) {
@@ -10,32 +15,45 @@ export async function GET(request: NextRequest) {
 
   try {
     // fetch all restaurants
-    const response = await fetch(`${env.API_URL}/restaurants`, {
+    const restaurantsRepsonse = await fetch(`${env.API_URL}/restaurants`, {
       next: { revalidate: 300 },
     });
-    const data: RestaurantsResponse = await response.json();
+    const data: RestaurantsResponse = await restaurantsRepsonse.json();
 
     // if categoryId is present, filter restaurants w/ filter_ids that include categoryId
-    const restaurants: Restaurant[] = categoryId
+    const restaurantsData: Restaurant[] = categoryId
       ? data.restaurants.filter((restaurant) =>
           restaurant.filter_ids?.includes(categoryId)
         )
       : data.restaurants;
 
     // fetch all open statuses
-    const openStatuses: OpenStatus[] = await Promise.all(
-      restaurants.map((restaurant) =>
+    const openStatusesResponse: OpenStatusResponse[] = await Promise.all(
+      restaurantsData.map((restaurant) =>
         fetch(`${env.API_URL}/open/${restaurant.id}`).then((res) => res.json())
       )
     );
 
-    // format restaurant data to include open status boolean
-    const restaurantDataWithOpenStatus = restaurants.map((restaurant) => ({
-      ...restaurant,
-      is_open: openStatuses.find(
-        (status) => status.restaurant_id === restaurant.id
-      )?.is_open,
-    }));
+    const priceRangesResponse: PriceRangeResponse[] = await Promise.all(
+      restaurantsData.map((restaurant) =>
+        fetch(`${env.API_URL}/price-range/${restaurant.price_range_id}`).then(
+          (res) => res.json()
+        )
+      )
+    );
+
+    // format restaurant data to include open status and price range
+    const restaurantDataWithAdditionalData = restaurantsData.map(
+      (restaurant) => ({
+        ...restaurant,
+        is_open: openStatusesResponse.find(
+          (status) => status.restaurant_id === restaurant.id
+        )?.is_open,
+        price_range: priceRangesResponse.find(
+          (priceRange) => priceRange.id === restaurant.price_range_id
+        )?.range,
+      })
+    );
 
     const endTime = Date.now();
 
@@ -44,12 +62,12 @@ export async function GET(request: NextRequest) {
         timestamp: new Date().toISOString(),
         responseTime: `${endTime - startTime}ms`,
         endpoint: '/filters',
-        recordCount: restaurantDataWithOpenStatus?.length || 0,
+        recordCount: restaurantDataWithAdditionalData?.length || 0,
         cachedAt: new Date().toISOString(),
       },
       success: true,
 
-      data: restaurantDataWithOpenStatus,
+      data: restaurantDataWithAdditionalData,
     });
   } catch (error) {
     console.log(error, 'error');
