@@ -18,15 +18,7 @@ const RestaurantOpenStatusBadge = ({
     );
     badgeText = 'Closed';
   }
-  return (
-    <Badge
-      text={badgeText}
-      icon={badgeIcon}
-      containerClasses={
-        'flex items-center justify-center gap-x-2 px-2 rounded-full border-2 border-gray-300'
-      }
-    />
-  );
+  return <Badge text={badgeText} icon={badgeIcon} />;
 };
 
 export default RestaurantOpenStatusBadge;

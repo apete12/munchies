@@ -8,6 +8,7 @@ import RestaurantCard from './components/restaurant-card/restaurant-card';
 import FilterButton from '@/app/components/filter-button/filter-button';
 import placeholder from '@/app/assets/placeholder.png';
 import filterDashboardContent from '@/app/content/restaurant-dashboard.json';
+import { getDeliveryTimeEstimate } from '@/app/utils/getDeliveryTimeEstimate';
 
 export default function RestaurantDashboard() {
   const router = useRouter();
@@ -148,7 +149,9 @@ export default function RestaurantDashboard() {
                         altText={''}
                         isRestaurantOpen={restaurant.is_open}
                         placeholderImage={placeholder}
-                        priceRange={restaurant.price_range}
+                        deliveryTimeEstimate={getDeliveryTimeEstimate(
+                          restaurant.delivery_time_minutes
+                        )}
                       />
                     </li>
                   ))}
