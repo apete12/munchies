@@ -4,13 +4,10 @@ import { useFetchRestaurnts } from '@/app/features/restaurant-dashboard/hooks/us
 import Loading from '@/app/loading';
 import Error from '@/app/error';
 
-
 import RestaurantCard from './components/restaurant-card/restaurant-card';
 import FilterButton from '@/app/components/filter-button/filter-button';
 import placeholder from '@/app/assets/placeholder.png';
 import filterDashboardContent from '@/app/content/restaurant-dashboard.json';
-
-
 
 export default function RestaurantDashboard() {
   const router = useRouter();
@@ -147,9 +144,9 @@ export default function RestaurantDashboard() {
                       {/* using placeholder images w/ decorative alt text */}
                       <RestaurantCard
                         name={restaurant.name}
-                        imageSrc={''} 
+                        imageSrc={''}
                         altText={''}
-                        isRestaurantOpen={restaurant.is_currently_open}
+                        isRestaurantOpen={restaurant.is_open}
                         placeholderImage={placeholder}
                       />
                     </li>

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { apiServices } from '@/app/lib/api';
-import { Restaurant, Filter } from '@/app/features/restaurant-dashboard/types';
+import { Restaurant, Filter } from '@/app/lib/types';
 
 export function useFetchRestaurnts() {
   const [isRestaurantDataLoading, setRestaurantDataLoading] =

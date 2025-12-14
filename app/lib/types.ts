@@ -6,11 +6,12 @@ export type Restaurant = {
   image_url: string;
   delivery_time_minutes: number;
   price_range_id: string;
+  is_open: boolean;
 };
 
 export type OpenStatus = {
   restaurant_id: string;
-  is_currently_open: boolean;
+  is_open: boolean;
 };
 
 export interface EnrichedRestaurant extends Restaurant {
