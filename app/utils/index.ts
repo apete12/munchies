@@ -1,2 +1,5 @@
 import { getDeliveryTimeEstimate } from './getDeliveryTimeEstimate';
-export default getDeliveryTimeEstimate;
+export { getDeliveryTimeEstimate };
+
+import { getRestaurantImage } from './getRestaurantImage';
+export { getRestaurantImage };

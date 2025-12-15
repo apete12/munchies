@@ -75,8 +75,6 @@ export function useFetchRestaurnts() {
     (filter) => filter.id === categoryId
   );
 
-  console.log(selectedCategory, 'selectedCategory');
-
   return {
     restaurantData,
     isRestaurantDataLoading,

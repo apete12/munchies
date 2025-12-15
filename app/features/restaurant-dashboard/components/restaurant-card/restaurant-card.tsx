@@ -13,23 +13,24 @@ const RestaurantCard = ({
   imageSrc,
   altText,
   isRestaurantOpen,
-  placeholderImage,
   deliveryTimeEstimate,
+  containerClasses = 'relative w-full h-full p-4 rounded-lg shadow-lg overflow-hidden bg-white ',
+  imageClasses = 'absolute -top-0 -right-2 rotate-[-15deg] opacity-90',
 }: RestaurantCardProps) => {
   return (
-    <div className="min-w-80 min-h-32 m-4 p-4 border-2 border-gray-300 rounded-lg shadow-lg">
+    <div className={containerClasses}>
+      <Image
+        className={imageClasses}
+        src={imageSrc}
+        alt={altText}
+        width={100}
+        height={100}
+      />
+
       <div className="flex items-center justify-start gap-x-3 mb-4">
         <RestaurantOpenStatusBadge isRestaurantOpen={isRestaurantOpen} />
         <Badge text={deliveryTimeEstimate} />
       </div>
-
-      <Image
-        className="max-w-72"
-        src={imageSrc || placeholderImage}
-        alt={altText}
-        width={200}
-        height={200}
-      />
       <h3>{name}</h3>
     </div>
   );

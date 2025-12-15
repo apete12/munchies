@@ -16,7 +16,7 @@ import Error from '@/app/error';
 import filterDashboardContent from '@/app/content';
 
 //// UTILS ////
-import getDeliveryTimeEstimate from '@/app/utils';
+import { getDeliveryTimeEstimate, getRestaurantImage } from '@/app/utils';
 
 //// ASSETS ////
 import placeholder from '@/app/assets';
@@ -77,12 +77,12 @@ export default function RestaurantDashboard() {
       : `No restaurants found ${categoryText}`;
 
   return (
-    <div className="flex min-h-screen min-w-screen items-center justify-center font-sans ">
-      <main className="flex min-h-screen w-full gap-y-5 items-start justify-between sm:items-start lg:px-12 py-24">
-        <section className="hidden lg:flex flex-col border-2 border-gray-300 p-5 rounded-lg min-w-48">
+    <div className="flex min-h-screen  items-center justify-center font-sans mt-8 ">
+      <main className="flex min-h-screen w-full items-start justify-between">
+        <section className="hidden lg:flex flex-col border-2 border-gray-300 p-5 rounded-lg w-2/12 bg-white">
           <h2 className="text-2xl mb-5">{verticalFilterSectionHeading}</h2>
           {verticalFilterSectionOptions.map((option) => (
-            <div key={option.id} className="flex flex-col mb-7">
+            <div key={option.id} className="flex flex-col mb-7 ">
               <h3 className="text-md mb-2">{option.label}</h3>
               {option.isEnabled ? (
                 <ul className="flex flex-col gap-y-5">
@@ -91,7 +91,7 @@ export default function RestaurantDashboard() {
                       <li key={categoryFilter.id}>
                         <FilterButton
                           filterName={categoryFilter.name}
-                          baseClasses="hover:underline hover:cursor-pointer text-black text-sm"
+                          baseClasses="hover:underline hover:cursor-pointer text-black text-sm bg-white"
                           onFilterClick={handleFilterClick}
                           filterIdentifier={categoryFilter.id}
                           filterType={'category'}
@@ -108,35 +108,40 @@ export default function RestaurantDashboard() {
             </div>
           ))}
         </section>
-        <section className="flex flex-col max-w-3/4">
+        <section className="flex flex-col w-9/12 ">
           <h2 className="sr-only">{horizontalFilterSectionHeading}</h2>
-          <ul className="w-full flex gap-x-5 overflow-x-auto flex-nowrap">
-            {horizontalFilterSectionOptions.map((option) => (
-              <li key={option.id} className="flex flex-col mb-7 flex-shrink-0">
-                {option.isEnabled && (
-                  <ul className="flex gap-x-5">
-                    {categoryFilters &&
-                      categoryFilters.map((categoryFilter) => (
-                        <li key={categoryFilter.id}>
-                          <FilterButton
-                            filterName={categoryFilter.name}
-                            baseClasses="hover:bg-gray-200 hover:cursor-pointer text-black text-sm min-w-40 min-h-20 border-2 border-gray-300 rounded-lg flex flex-col items-center justify-around"
-                            onFilterClick={handleFilterClick}
-                            filterIdentifier={categoryFilter.id}
-                            filterType={'category'}
-                            activeFilterId={categoryId || ''}
-                            activeStateClasses="bg-gray-300"
-                            inactiveStateClasses=""
-                            imageSrc={placeholder}
-                          />
-                        </li>
-                      ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
-          <div className="flex flex-col">
+          <div className="overflow-x-auto w-full">
+            <ul className="w-full flex gap-x-5 overflow-x-auto flex-nowrap ">
+              {horizontalFilterSectionOptions.map((option) => (
+                <li
+                  key={option.id}
+                  className="flex flex-col mb-7 flex-shrink-0"
+                >
+                  {option.isEnabled && (
+                    <ul className="flex gap-x-5">
+                      {categoryFilters &&
+                        categoryFilters.map((categoryFilter) => (
+                          <li key={categoryFilter.id}>
+                            <FilterButton
+                              filterName={categoryFilter.name}
+                              baseClasses="hover:bg-gray-200 hover:cursor-pointer text-black text-sm min-w-40 min-h-20 border-2 border-gray-300 rounded-lg flex flex-col items-center justify-around bg-white"
+                              onFilterClick={handleFilterClick}
+                              filterIdentifier={categoryFilter.id}
+                              filterType={'category'}
+                              activeFilterId={categoryId || ''}
+                              activeStateClasses="bg-gray-300"
+                              inactiveStateClasses=""
+                              imageSrc={placeholder}
+                            />
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex flex-col ">
             <h2 className="text-2xl mt-10 mb-5">
               {restaurantListSectionHeading}
             </h2>
@@ -149,17 +154,19 @@ export default function RestaurantDashboard() {
             {isRestaurantDataLoading ? (
               <Loading />
             ) : (
-              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {restaurantData &&
                   restaurantData.map((restaurant) => (
                     <li key={restaurant.id}>
-                      {/* using placeholder images w/ decorative alt text */}
+                      {/* using decorative alt text */}
                       <RestaurantCard
                         name={restaurant.name}
-                        imageSrc={''}
+                        imageSrc={
+                          getRestaurantImage(restaurant.image_url) ||
+                          placeholder
+                        }
                         altText={''}
                         isRestaurantOpen={restaurant.is_open}
-                        placeholderImage={placeholder}
                         deliveryTimeEstimate={getDeliveryTimeEstimate(
                           restaurant.delivery_time_minutes
                         )}

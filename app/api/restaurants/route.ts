@@ -55,6 +55,11 @@ export async function GET(request: NextRequest) {
       })
     );
 
+    console.log(
+      restaurantDataWithAdditionalData,
+      'restaurantDataWithAdditionalData'
+    );
+
     const endTime = Date.now();
 
     return Response.json({

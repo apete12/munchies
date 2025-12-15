@@ -2,10 +2,10 @@ import { StaticImageData } from 'next/image';
 
 export type RestaurantCardProps = {
   name: string;
-  imageSrc: string;
+  imageSrc: StaticImageData;
   altText: string;
   isRestaurantOpen: boolean;
-  placeholderImage: StaticImageData;
-
   deliveryTimeEstimate: string;
+  containerClasses?: string;
+  imageClasses?: string;
 };
