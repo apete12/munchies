@@ -27,7 +27,7 @@ const FilterButton = ({
           src={imageSrc}
           width={30}
           height={30}
-          alt={''} // images should be decorative for buttons
+          alt={''} // images should be decorative for buttons - unless no text present - need to account for that here 
         />
       )}
     </button>

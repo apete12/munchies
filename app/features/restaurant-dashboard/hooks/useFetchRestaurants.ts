@@ -2,7 +2,10 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { apiServices } from '@/app/lib/api';
-import { Restaurant, Filter } from '@/app/lib/types';
+import { Restaurant, FilterSection } from '@/app/lib/types';
+import { FilterDashboardContent } from '../types';
+//// CONTENT ////
+import filterDashboardContentFromFile from '@/app/content';
 
 export function useFetchRestaurnts() {
   const [isRestaurantDataLoading, setRestaurantDataLoading] =
@@ -13,10 +16,15 @@ export function useFetchRestaurnts() {
   const [restaurantData, setRestaurantData] = useState<Restaurant[] | null>(
     null
   );
-  const [categoryFilters, setCategoryFilters] = useState<Filter[] | null>(null);
+  const [filters, setFilters] = useState<FilterSection[] | []>([]);
+  const filterDashboardContent: FilterDashboardContent =
+    filterDashboardContentFromFile;
 
   const searchParams = useSearchParams();
   const categoryId = searchParams.get('category');
+  const selectedCategory = filters
+    ?.find((filter) => filter.filterType === 'category')
+    ?.options.find((option) => option.id === categoryId);
 
   useEffect(() => {
     async function fetchRestaurants() {
@@ -54,7 +62,13 @@ export function useFetchRestaurnts() {
         const categoryFiltersResponse = await apiServices.getAllFilters();
 
         if (categoryFiltersResponse.data.filters.length > 0) {
-          setCategoryFilters(categoryFiltersResponse.data.filters);
+          setFilters((prev) => [
+            ...(prev || []),
+            {
+              filterType: 'category',
+              options: categoryFiltersResponse.data.filters,
+            },
+          ]);
         } else {
           setError(
             categoryFiltersResponse.error?.message ||
@@ -71,18 +85,15 @@ export function useFetchRestaurnts() {
     fetchCategoryFilters();
   }, []);
 
-  const selectedCategory = categoryFilters?.find(
-    (filter) => filter.id === categoryId
-  );
-
   return {
     restaurantData,
     isRestaurantDataLoading,
     isCategoryFiltersLoading,
-    categoryFilters,
+    filters,
     error,
     setRestaurantData,
     categoryId,
     selectedCategory,
+    filterDashboardContent,
   };
 }

@@ -8,8 +8,6 @@ import pizzaImage from '../assets/pizza.png';
 import placeholder from '../assets/placeholder.png';
 
 export function getRestaurantImage(imageSrc: string) {
-  console.log('Received:', imageSrc, 'Type:', typeof imageSrc);
-
   switch (imageSrc) {
     case '/images/breakfast.png':
       return breakfastImage;

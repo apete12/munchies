@@ -37,3 +37,8 @@ export type Filter = {
 export interface FilterResponse {
   filters: Filter[];
 }
+
+export type FilterSection = {
+  filterType: string;
+  options: Filter[];
+};
