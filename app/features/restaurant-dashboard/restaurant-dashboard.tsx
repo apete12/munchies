@@ -48,7 +48,7 @@ export default function RestaurantDashboard() {
     router.push(`${pathname}${query}`);
   };
 
-  // CONTENT VARS
+  //// CONTENT VARS ////
   const verticalFilterSectionHeading =
     filterDashboardContent.verticalFilterSection.sectionHeading.label;
   const verticalFilterSectionOptions =
@@ -74,6 +74,7 @@ export default function RestaurantDashboard() {
       ? `${restaurantLength} restaurant ${plural} found${categoryText}`
       : `No restaurants found ${categoryText}`;
 
+  //////////////////////// TODO: create util w/ logic ////////////////////////
   const formattedVerticalFilterSections = verticalFilterSectionOptions.map(
     (section) => ({
       ...section,
@@ -95,8 +96,13 @@ export default function RestaurantDashboard() {
         [],
     })
   );
+  //////////////////////////////////////////////////////////////////////////////
 
+  //// CLASSNAMES ////
   const baseCardClasses = `border-2 border-gray-300 rounded-lg bg-white`;
+  const horizontalfilterSectionCardClasses = `hover:bg-gray-200 hover:underline text-sm min-w-40 min-h-20 flex flex-col items-center justify-around ${baseCardClasses}`;
+  const verticalfilterSectionContainerClasses = `hidden lg:flex flex-col p-5 rounded-lg w-2/12 ${baseCardClasses}`;
+  const restaurantGridClasses = `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10`;
 
   return (
     <div className="flex items-start justify-center mt-8 ">
@@ -108,7 +114,7 @@ export default function RestaurantDashboard() {
           displaySectionHeading={true}
           handleFilterClick={handleFilterClick}
           activeFilterId={categoryId || ''}
-          containerClasses={`hidden lg:flex flex-col p-5 rounded-lg w-2/12 ${baseCardClasses}`}
+          containerClasses={verticalfilterSectionContainerClasses}
           optionBaseClasses="hover:underline text-sm"
           optionListContainerClasses="flex flex-col mb-7 "
           listsDirectionClasses="flex flex-col gap-y-5"
@@ -121,7 +127,7 @@ export default function RestaurantDashboard() {
             displaySectionHeading={false}
             handleFilterClick={handleFilterClick}
             activeFilterId={categoryId || ''}
-            optionBaseClasses={`hover:bg-gray-200 hover:underline text-sm min-w-40 min-h-20 flex flex-col items-center justify-around ${baseCardClasses}`}
+            optionBaseClasses={horizontalfilterSectionCardClasses}
             optionListContainerClasses={'overflow-x-auto w-full'}
             listsDirectionClasses={
               'w-full flex gap-x-5 overflow-x-auto flex-nowrap'
@@ -140,7 +146,7 @@ export default function RestaurantDashboard() {
             {isRestaurantDataLoading ? (
               <Loading />
             ) : (
-              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              <ul className={restaurantGridClasses}>
                 {restaurantData &&
                   restaurantData.map((restaurant) => (
                     <li key={restaurant.id}>
